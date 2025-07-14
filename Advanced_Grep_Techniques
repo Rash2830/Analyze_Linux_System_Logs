@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "## Pipe-based log filtering: systemd (excluding debug)"
+sudo journalctl | grep "systemd" | grep -v "debug"
+
+echo -e "\n## Extracting specific log sections around 'error' from kernel logs"
+sudo journalctl -k | grep -i -A 5 -B 2 "error"

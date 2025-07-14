@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "## Top 10 CPU consuming processes:"
+ps aux --sort=-%cpu | awk 'NR<=10{print $2, $3, $11}'
+
+echo -e "\n## Extracting unique IP addresses from failed SSH login attempts:"
+sudo journalctl -u ssh.service | grep "Failed password" | awk '{for(i=1;i<=NF;i++) if ($i ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/) print $i}' | sort | uniq -c | sort -nr
+
+echo -e "\n## Real-time system resource usage logs (Press Ctrl+C to exit):"
+sudo journalctl -f -u system.slice

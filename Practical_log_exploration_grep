@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Search SSH authentication logs
+sudo journalctl -u ssh.service | grep "sshd"
+
+## Find error messages in the system logs
+sudo journalctl -p err  # priority err (errors and above)
+
+## Count failed login attempts
+sudo journalctl -u ssh.service | grep -c "Failed"
+
+# Search for critical messages in all logs
+sudo journalctl -p crit

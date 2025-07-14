@@ -1,0 +1,133 @@
+https://labex.io/tutorials/linux-how-to-analyze-linux-system-logs-409907#introduction
+Linux Log Basics
+Understanding Linux Logs
+
+Linux logs are critical system event records that capture detailed information about system activities, software performance, and potential issues. These log files serve as essential diagnostic tools for system administrators and developers to monitor, troubleshoot, and maintain Linux systems.
+Log File Locations and Types
+
+Linux systems typically store log files in the /var/log directory. Different log files capture various system events:
+Log File 	Purpose
+/var/log/syslog 	General system activities
+/var/log/auth.log 	Authentication and security events
+/var/log/kern.log 	Linux kernel messages
+/var/log/messages 	System-wide message logs
+Log Management Architecture
+
+System Events
+Log Generation
+Log Storage
+Log Rotation
+
+Log Analysis
+Practical Log Exploration Example
+
+Here's a bash script demonstrating basic log file inspection:
+
+#!/bin/bash
+
+## Display last 10 system log entries
+echo "Recent System Logs:"
+tail -n 10 /var/log/syslog
+
+## Count total log entries
+echo "Total Log Entries:"
+wc -l /var/log/syslog
+
+## Filter specific log events
+echo "SSH Authentication Attempts:"
+grep "sshd" /var/log/auth.log | grep "Accepted" | tail -n 5
+
+This script showcases fundamental log file interactions, helping users understand how to retrieve and analyze system events efficiently.
+Syslog Configuration
+
+Linux uses syslog daemon to manage log generation and routing. Configuration files like /etc/rsyslog.conf define log handling rules, enabling systematic log management across different system components.
+Grep for Log Search
+Introduction to Grep Command
+
+Grep is a powerful text searching and filtering utility in Linux, essential for efficient log analysis and error detection. It allows precise pattern matching across log files, enabling quick identification of specific system events and troubleshooting.
+Basic Grep Syntax and Patterns
+
+Grep Command
+Pattern Matching
+Log File Filtering
+
+Result Output
+Grep Option 	Function
+-i 	Case-insensitive search
+-n 	Display line numbers
+-v 	Invert match
+-r 	Recursive search
+-c 	Count matching lines
+Practical Log Searching Examples
+
+#!/bin/bash
+
+## Search SSH authentication logs
+grep "sshd" /var/log/auth.log
+
+## Find error messages
+grep -i "error" /var/log/syslog
+
+## Count failed login attempts
+grep -c "Failed" /var/log/auth.log
+
+## Search multiple log files recursively
+grep -r "critical" /var/log/
+
+Advanced Grep Techniques
+
+Complex log searching often requires combining grep with other commands:
+
+## Pipe-based log filtering
+journalctl | grep "systemd" | grep -v "debug"
+
+## Extract specific log sections
+grep -A 5 -B 2 "error" /var/log/kern.log
+
+These examples demonstrate versatile log searching strategies using grep, enabling comprehensive system event analysis.
+Real coding. Zero setup. Maximum fun.
+Advanced Log Insights
+Log Analysis Strategies
+
+Advanced log insights involve sophisticated techniques for extracting meaningful information from system logs, enabling comprehensive performance analysis and security monitoring.
+Log Processing Tools
+
+Raw Log Data
+Log Parsing Tools
+awk
+sed
+
+journalctl
+Tool 	Primary Function
+awk 	Complex text processing
+sed 	Stream editing
+journalctl 	Systemd log management
+Performance and Security Log Analysis
+
+#!/bin/bash
+
+## Identify top CPU consuming processes
+ps aux | awk '{print $2, $3, $11}' | sort -k2 -nr | head -n 10
+
+## Extract unique IP addresses from authentication logs
+grep "Failed" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr
+
+## Monitor real-time system resource usage
+journalctl -f -u system.slice
+
+Security Log Parsing Script
+
+#!/bin/bash
+
+## Detect potential brute-force SSH attacks
+failed_attempts=$(grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | awk '$1 > 5')
+
+if [ -n "$failed_attempts" ]; then
+  echo "Potential SSH Brute Force Detected:"
+  echo "$failed_attempts"
+fi
+
+Advanced Logging Configuration
+
+
+
