@@ -1,0 +1,8 @@
+echo "Recent System Log (last 10 lines):"
+sudo journalctl -n 10
+
+echo "Total number of log entries:"
+sudo journalctl --no-pager | wc -l
+
+echo "Last 5 SSH Authentication Accepted Attempts:"
+sudo journalctl -u ssh.service --grep="Accepted" -n 5
